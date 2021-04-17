@@ -20,6 +20,7 @@
     "@angular/platform-browser-dynamic": "~11.2.0",
     "@angular/router": "~11.2.0",
     "@ionic-native/app-version": "^5.32.0",
+    "@ionic-native/core": "^5.32.0",
     "@ionic-native/market": "^5.32.0",
     "@ionic-native/network": "^5.32.0",
     "@ionic-native/social-sharing": "^5.32.0",
