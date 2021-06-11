@@ -1,0 +1,36 @@
+ion-menu-button {
+  color: var(--ion-color-primary);
+}
+.new_box {
+  // background: #ea7a10;
+  background: linear-gradient(145deg, #facc22, #f83600);
+  border-radius: 6px;
+  text-align: center;
+  padding: 15px 0px;
+  .box-text {
+    font-weight: bold;
+    margin-top: 5px;
+    font-size: 16px;
+  }
+  h4 {
+    font-size: 12px;
+    margin: 6px;
+  }
+}
+.item-poster {
+  --background: #ea7a10;
+  // margin: 0 10px;
+  border-radius: 5px;
+  .icon-poster {
+    font-size: 35px;
+    color: white;
+  }
+}
+
+.divider {
+  &:after{
+    background: linear-gradient(145deg, #facc22, #f83600);
+    height: 11px;
+    width: 100%;
+  }
+}

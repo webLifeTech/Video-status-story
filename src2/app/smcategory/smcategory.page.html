@@ -1,0 +1,47 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Status Maker</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [scrollEvents]="true" (ionScroll)="onScroll($event)" #content>
+  <ion-grid *ngIf="service.statusMakerBucketUrl != ''" style="padding-top: 0px">
+    <ng-container *ngFor="let cat of service.custCategoryList">
+      <ion-row>
+        <ion-col class="ion-no-padding">
+          <h2>{{cat.title}}</h2>
+        </ion-col>
+      </ion-row>
+      <ion-row (click)="goToCreateList(cat._id, cat.title, cat.emoji)">
+        <ion-col size="4">
+          <img src="{{service.statusMakerBucketUrl}}{{cat.image}}" />
+        </ion-col>
+        <ion-col size="4">
+          <img src="{{service.statusMakerBucketUrl}}{{cat.image1}}" />
+        </ion-col>
+        <ion-col size="4" text-center>
+          <div class="v-center">
+            <div style="text-align: center">
+              <img src="assets/more.png" style="max-width: 30%" />
+            </div>
+            <div>
+              <h2>More..</h2>
+            </div>
+          </div>
+        </ion-col>
+        <ion-col size="12" class="ion-no-padding">
+          <hr />
+        </ion-col>
+      </ion-row>
+    </ng-container>
+  </ion-grid>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed" *ngIf="isShown">
+    <ion-fab-button mini (click)="scrollToTop()" class="fab-bg">
+      <ion-icon name="caret-up-outline"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>

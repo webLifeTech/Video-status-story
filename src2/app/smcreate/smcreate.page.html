@@ -1,0 +1,440 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button icon-only (click)="goBack()">
+        <ion-icon name="arrow-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Create</ion-title>
+    <ion-buttons slot="end" *ngIf="!img">
+      <ion-button icon-only (click)="lockObject()">
+        <ion-icon name="lock-closed-outline"></ion-icon>
+      </ion-button>
+      <ion-button icon-only (click)="unLockObject()">
+        <ion-icon name="lock-open-outline"></ion-icon>
+      </ion-button>
+      <ion-button
+        *ngIf="!spinner && !isSelection && !isAddedText && !isAddedEmoji && !isAddedEffect && !isAddedSticker && !isAddedFilter && !isOpacity"
+        (click)="save()"
+        icon-only
+      >
+        <ion-icon name="checkmark-done-outline"></ion-icon>
+      </ion-button>
+      <ion-button *ngIf="spinner" ion-button icon-only> Creating.. </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-no-padding" (click)="outsideClick()">
+  <div class="spin" *ngIf="spinner">
+    <ion-spinner name="dots"></ion-spinner>
+  </div>
+
+  <ion-grid class="ion-no-padding">
+    <ion-row class="ion-no-padding">
+      <ion-col size="12" *ngIf="!img" class="ion-no-padding">
+        <canvas #myCanvas id="myCanvas" width="1080px" height="1080px"></canvas>
+      </ion-col>
+    </ion-row>
+    <ion-row class="ion-no-padding">
+      <ion-col size="12" *ngIf="img" class="ion-no-padding">
+        <img src="{{img}}" />
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
+
+<ion-footer *ngIf="img">
+  <ion-toolbar>
+    <ion-grid style="text-align: center" class="ion-padding">
+      <ion-row>
+        <ion-col>
+          <ion-icon
+            name="arrow-down-circle-outline"
+            class="only-icon-withoutbutton"
+            *ngIf="!downloadspinner"
+            (click)="download()"
+          ></ion-icon>
+          <ion-spinner *ngIf="downloadspinner" name="dots"></ion-spinner>
+        </ion-col>
+        <ion-col (click)="shareVia('wp')">
+          <ion-icon
+            name="logo-whatsapp"
+            class="only-icon-withoutbutton"
+          ></ion-icon>
+        </ion-col>
+        <ion-col (click)="shareVia('share')">
+          <ion-icon
+            name="share-social-outline"
+            class="only-icon-withoutbutton"
+          ></ion-icon>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-toolbar>
+</ion-footer>
+
+<ion-footer *ngIf="!img && !spinner">
+  <ion-toolbar
+    class="ion-no-padding"
+    style="padding-bottom: 0 !important"
+    *ngIf="!isAddedText && !isAddedEmoji && !isAddedSticker && !isAddedFilter && !isAddedEffect"
+  >
+    <ion-grid>
+      <ion-row>
+        <ion-col size="12" *ngIf="isOpacity">
+          <ion-range
+            snaps
+            min="1"
+            max="10"
+            step="1"
+            [(ngModel)]="opacityModel"
+            color="dark"
+            (ionChange)="setOpicity()"
+          >
+          </ion-range>
+        </ion-col>
+        <ion-col size="12">
+          <ion-segment value="main" color="primary" scrollable="true" mode="md">
+            <ion-segment-button
+              value="crop"
+              (click)="addImage()"
+              layout="icon-top"
+            >
+              <ion-icon name="camera" class="icon-color"></ion-icon>
+              <ion-label class="segment-label">Add Img</ion-label>
+            </ion-segment-button>
+            <ion-segment-button
+              value="create"
+              (click)="addTextOption()"
+              layout="icon-top"
+            >
+              <ion-icon name="text-outline" class="icon-color"></ion-icon>
+              <ion-label class="segment-label">Text</ion-label>
+            </ion-segment-button>
+            <ion-segment-button
+              value="frontback"
+              (click)="setAsBack()"
+              layout="icon-top"
+            >
+              <ion-icon name="albums" class="icon-color"></ion-icon>
+              <ion-label class="segment-label">
+                {{isFront ? 'set back' : 'set front'}}</ion-label
+              >
+            </ion-segment-button>
+
+            <ion-segment-button
+              value="opc"
+              (click)="opacityClick()"
+              layout="icon-top"
+            >
+              <ion-icon name="flash-off-outline" class="icon-color"></ion-icon>
+              <ion-label class="segment-label">Opacity</ion-label>
+            </ion-segment-button>
+            <ion-segment-button
+              value="Effect"
+              (click)="isEffectOption()"
+              layout="icon-top"
+            >
+              <ion-icon name="planet-outline" class="icon-color"></ion-icon>
+              <ion-label class="segment-label">Mask</ion-label>
+            </ion-segment-button>
+            <ion-segment-button
+              value="sticker"
+              (click)="isStickerOption()"
+              *ngIf="stickers.length"
+              layout="icon-top"
+            >
+              <ion-icon name="happy-outline" class="icon-color"></ion-icon>
+              <ion-label class="segment-label">Sticker</ion-label>
+            </ion-segment-button>
+            <ion-segment-button
+              value="happy"
+              (click)="isEmojiOption()"
+              layout="icon-top"
+            >
+              <ion-icon name="happy-outline" class="icon-color"></ion-icon>
+              <ion-label class="segment-label">Emoji</ion-label>
+            </ion-segment-button>
+            <ion-segment-button
+              value="filter"
+              (click)="isFilterOption()"
+              layout="icon-top"
+            >
+              <ion-icon
+                name="color-filter-outline"
+                class="icon-color"
+              ></ion-icon>
+              <ion-label class="segment-label">Filter</ion-label>
+            </ion-segment-button>
+          </ion-segment>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-toolbar>
+
+  <ion-toolbar
+    class="ion-no-padding"
+    style="padding-bottom: 0 !important"
+    *ngIf="isAddedText"
+  >
+    <ion-row>
+      <ion-col size="12" *ngIf="isOpacity">
+        <ion-range
+          snaps
+          min="1"
+          max="10"
+          step="1"
+          [(ngModel)]="opacityModel"
+          color="dark"
+          (ionChange)="setOpicity()"
+        >
+        </ion-range>
+      </ion-col>
+      <ion-col size="10">
+        <ion-segment value="txt" color="primary" scrollable="true" mode="md">
+          <ion-segment-button
+            value="addtext"
+            (click)="addText()"
+            layout="icon-top"
+          >
+            <ion-icon name="text-outline" class="icon-color"></ion-icon>
+            <ion-label class="segment-label">Add Text</ion-label>
+          </ion-segment-button>
+          <ion-segment-button
+            value="color"
+            (click)="addColor()"
+            layout="icon-top"
+          >
+            <ion-icon
+              name="color-palette-outline"
+              class="icon-color"
+            ></ion-icon>
+            <ion-label class="segment-label">Color</ion-label>
+          </ion-segment-button>
+          <ion-segment-button
+            value="style"
+            (click)="addStyle()"
+            layout="icon-top"
+          >
+            <ion-icon
+              name="color-palette-outline"
+              class="icon-color"
+            ></ion-icon>
+            <ion-label class="segment-label">Style</ion-label>
+          </ion-segment-button>
+          <ion-segment-button
+            value="font"
+            (click)="addFont()"
+            layout="icon-top"
+          >
+            <ion-icon name="text-outline" class="icon-color"></ion-icon>
+            <ion-label class="segment-label">Font</ion-label>
+          </ion-segment-button>
+          <ion-segment-button
+            value="opc"
+            (click)="opacityClick()"
+            layout="icon-top"
+          >
+            <ion-icon name="flash-off-outline" class="icon-color"></ion-icon>
+            <ion-label class="segment-label">Opacity</ion-label>
+          </ion-segment-button>
+        </ion-segment>
+      </ion-col>
+
+      <ion-col size="2">
+        <ion-segment value="cltxt" color="primary" scrollable="false" mode="md">
+          <ion-segment-button
+            value="closetxt"
+            (click)="addTextOption()"
+            layout="icon-top"
+          >
+            <ion-icon name="close-outline" class="icon-color"></ion-icon>
+            <ion-label class="segment-label">Close</ion-label>
+          </ion-segment-button>
+        </ion-segment>
+      </ion-col>
+    </ion-row>
+  </ion-toolbar>
+
+  <ion-toolbar
+    class="ion-no-padding"
+    style="padding-bottom: 0 !important"
+    *ngIf="isAddedEmoji"
+  >
+    <ion-grid>
+      <ion-row>
+        <ion-col size="10">
+          <ion-segment
+            color="primary"
+            scrollable="true"
+            mode="md"
+            class="m-top"
+          >
+            <ion-segment-button
+              style="min-width: 62px !important"
+              *ngFor="let i of [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18];let ind=index"
+              (click)="addEmoji('assets/emoji/'+i+'.png')"
+              [value]="ind"
+            >
+              <img src="assets/emoji/{{i}}.png" />
+            </ion-segment-button>
+          </ion-segment>
+        </ion-col>
+        <ion-col size="2">
+          <ion-segment
+            value="emojiclose"
+            color="primary"
+            scrollable="false"
+            mode="md"
+          >
+            <ion-segment-button
+              (click)="isEmojiOption()"
+              value="close12"
+              layout="icon-top"
+            >
+              <ion-label class="segment-label">Close</ion-label>
+              <ion-icon name="close-outline" class="icon-color"></ion-icon>
+            </ion-segment-button>
+          </ion-segment>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-toolbar>
+
+  <ion-toolbar
+    class="ion-no-padding"
+    style="padding-bottom: 0 !important"
+    *ngIf="isAddedEffect"
+  >
+    <ion-row>
+      <ion-col size="10">
+        <ion-segment
+          value="efffect"
+          color="primary"
+          scrollable="true"
+          mode="md"
+          class="m-top"
+        >
+          <ion-segment-button
+            style="min-width: 62px !important"
+            *ngFor="let i of comman.effects;let ind = index"
+            [value]="ind"
+            (click)="addEffect(comman.statusMakerBucketUrl + 'effect/' + i)"
+          >
+            <img ion-icon src="{{comman.statusMakerBucketUrl}}effect/{{i}}" />
+          </ion-segment-button>
+        </ion-segment>
+      </ion-col>
+      <ion-col size="2">
+        <ion-segment
+          value="effclose"
+          color="primary"
+          scrollable="false"
+          mode="md"
+        >
+          <ion-segment-button
+            (click)="isEffectOption()"
+            value="close15"
+            layour="icon-top"
+          >
+            <ion-label class="segment-label">Close</ion-label>
+            <ion-icon name="close-outline" class="icon-color"></ion-icon>
+          </ion-segment-button>
+        </ion-segment>
+      </ion-col>
+    </ion-row>
+  </ion-toolbar>
+
+  <ion-toolbar
+    class="ion-no-padding"
+    style="padding-bottom: 0 !important"
+    *ngIf="isAddedFilter"
+  >
+    <ion-row>
+      <ion-col size="10">
+        <ion-segment
+          value="filteraa"
+          color="primary"
+          scrollable="true"
+          mode="md"
+          class="m-top"
+        >
+          <ion-segment-button
+            style="min-width: 62px !important"
+            *ngFor="let i of filterArray;let ind = index"
+            (click)="addFilter(ind)"
+            [value]="ind"
+          >
+            <img ion-icon src="assets/filter/{{ind}}.png" />
+          </ion-segment-button>
+        </ion-segment>
+      </ion-col>
+      <ion-col size="2">
+        <ion-segment
+          value="fltclose"
+          color="primary"
+          scrollable="false"
+          mode="md"
+        >
+          <ion-segment-button
+            (click)="isFilterOption()"
+            value="close41"
+            layout="icon-top"
+          >
+            <ion-label class="segment-label">Close</ion-label>
+            <ion-icon name="close-outline" class="icon-color"></ion-icon>
+          </ion-segment-button>
+        </ion-segment>
+      </ion-col>
+    </ion-row>
+  </ion-toolbar>
+
+  <ion-toolbar
+    class="ion-no-padding"
+    style="padding-bottom: 0 !important"
+    *ngIf="isAddedSticker"
+  >
+    <ion-row>
+      <ion-col size="10">
+        <ion-segment
+          value="stiickker"
+          color="primary"
+          scrollable="true"
+          mode="md"
+          class="m-top"
+        >
+          <ion-segment-button
+            style="min-width: 62px !important"
+            *ngFor="let stic of stickers"
+            (click)="addSticker(comman.statusMakerBucketUrl + 'emoji/' + stic.image)"
+            [value]="stic.image"
+          >
+            <ion-img
+              ion-icon
+              src="{{comman.statusMakerBucketUrl}}emoji/{{stic.image}}"
+              height="50px"
+            ></ion-img>
+          </ion-segment-button>
+        </ion-segment>
+      </ion-col>
+      <ion-col size="2">
+        <ion-segment
+          value="sticclos"
+          color="primary"
+          scrollable="false"
+          mode="md"
+        >
+          <ion-segment-button
+            (click)="isStickerOption()"
+            value="close24"
+            layout="icon-top"
+          >
+            <ion-label class="segment-label">Close</ion-label>
+            <ion-icon name="close-outline" class="icon-color"></ion-icon>
+          </ion-segment-button>
+        </ion-segment>
+      </ion-col>
+    </ion-row>
+  </ion-toolbar>
+</ion-footer>

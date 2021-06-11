@@ -1,0 +1,29 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>My Creation</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-no-padding">
+  <div class="spin" *ngIf="spinner">
+    <ion-spinner name="dots"></ion-spinner>
+  </div>
+
+  <ion-row *ngIf="!myImages.length">
+    <ion-col class="ion-text-center">
+      <p>No Creation Found!</p>
+    </ion-col>
+  </ion-row>
+
+  <div class="imagegal">
+    <img
+      *ngFor="let img of myImages;let i =index"
+      src="{{img.image}}"
+      style="padding-top: 7px"
+      (click)="presentProfileModal(i)"
+    />
+  </div>
+</ion-content>

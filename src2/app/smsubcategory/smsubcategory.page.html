@@ -1,0 +1,33 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{title}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [scrollEvents]="true" (ionScroll)="onScroll($event)" #content>
+  <div class="spin" *ngIf="spinner">
+    <ion-spinner name="dots"></ion-spinner>
+  </div>
+
+  <ion-grid style="padding-top: 0px">
+    <ion-row>
+      <ion-col
+        size="6"
+        *ngFor="let i of service.custSubCategoryList[categoryId]"
+        (click)="goToCreateCust(service.statusMakerBucketUrl + i.image)"
+      >
+        <div style="min-height: 150px; background: #000000">
+          <img src="{{service.statusMakerBucketUrl + i.image}}" />
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed" *ngIf="isShown">
+    <ion-fab-button mini (click)="scrollToTop()" class="fab-bg">
+      <ion-icon name="caret-up-outline"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>

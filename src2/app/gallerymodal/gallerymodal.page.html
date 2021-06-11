@@ -1,0 +1,69 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>My Creation</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-no-padding">
+  <ion-grid class="ion-no-padding">
+    <ion-row>
+      <ion-col style="padding: 0 !important">
+        <ion-slides #slider [options]="mySlideOptions" loop="true">
+          <ion-slide *ngFor="let i of images">
+            <div class="slide-image-wraper">
+              <img alt="" src="{{i.image}}" />
+            </div>
+          </ion-slide>
+        </ion-slides>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
+
+<!-- <ion-footer>
+  <ion-toolbar class="ion-text-center">
+    <ion-grid class="ion-no-padding">
+      <ion-row>
+        <ion-col (click)="delete()">
+          <ion-icon
+            name="trash-outline"
+            class="only-icon-withoutbutton"
+          ></ion-icon>
+        </ion-col>
+
+        <ion-col (click)="shareVia()">
+          <ion-icon
+            name="share-social-outline"
+            class="only-icon-withoutbutton"
+          ></ion-icon>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-toolbar>
+</ion-footer> -->
+
+<ion-footer>
+  <ion-toolbar class="ion-text-center" style="height: 65px;">
+    <ion-grid class="ion-no-padding">
+      <ion-row>
+        <ion-col size="12">
+          <ion-fab style="position: relative;display: flex;">
+            <ion-fab-button color="secondary" class="costum-fab" (click)="delete()" style="margin: auto">
+              <ion-icon name="trash-outline" class="blkColor" style="font-size: 26px;"></ion-icon>
+            </ion-fab-button>
+            <ion-fab-button *ngIf="!service.sharespinner" color="secondary" class="costum-fab" (click)="shareVia()"
+              style="margin: auto;">
+              <ion-icon name="arrow-redo-circle-outline" class="blkColor" style="font-size: 34px;"></ion-icon>
+            </ion-fab-button>
+            <ion-fab-button *ngIf="service.sharespinner" color="secondary" class="costum-fab" style="margin: auto;">
+              <ion-spinner name="dots"></ion-spinner>
+            </ion-fab-button>
+          </ion-fab>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-toolbar>
+</ion-footer>

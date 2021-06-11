@@ -1,0 +1,50 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{images.name}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-no-padding">
+  <ion-grid class="ion-no-padding">
+    <ion-row>
+      <ion-col style="padding: 0 !important">
+        <ion-slides #slider [options]="mySlideOptions" loop="true">
+          <ion-slide *ngFor="let i of images.image">
+            <div class="slide-image-wraper">
+              <img
+                alt=""
+                src="{{service.bucketUrl}}{{foldername}}/{{images.foldername}}/{{i.link}}"
+              />
+            </div>
+          </ion-slide>
+        </ion-slides>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar class="ion-text-center" style="height: 65px;">
+    <ion-grid class="ion-no-padding">
+      <ion-row>
+        <ion-col size="12">
+          <ion-fab style="position: relative;display: flex;">
+            <ion-fab-button color="secondary" class="costum-fab" (click)="download()" style="margin: auto">
+                <ion-icon *ngIf="!downloadspinner" name="arrow-down-circle-outline" class="blkColor" style="font-size: 34px;"></ion-icon>
+                <ion-spinner *ngIf="downloadspinner" name="dots"></ion-spinner>
+            </ion-fab-button>
+            <ion-fab-button *ngIf="!sharespinner" color="secondary" class="costum-fab" (click)="share()" style="margin: auto;">
+                <ion-icon name="arrow-redo-circle-outline" class="blkColor" style="font-size: 34px;"></ion-icon>
+            </ion-fab-button>
+            <ion-fab-button *ngIf="sharespinner" color="secondary" class="costum-fab" style="margin: auto;">
+              <ion-spinner name="dots"></ion-spinner>
+            </ion-fab-button>
+          </ion-fab>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-toolbar>
+</ion-footer>

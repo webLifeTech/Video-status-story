@@ -1,0 +1,36 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{videoList.name}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [scrollEvents]="true" (ionScroll)="onScroll($event)" #content>
+  <div *ngIf="spinner" class="centered">
+    <ion-spinner name="dots"></ion-spinner>
+  </div>
+  <!-- class="imagegal" -->
+  <ng-container *ngIf="!isRagulerGrid">
+    <div class="imagegal" *ngIf="!spinner">
+      <img *ngFor="let image of videoList.image; let i=index"
+        src="{{service.bucketUrl}}{{foldername}}/{{videoList.foldername}}/{{image.link}}"
+        style="padding-top: 7px"
+        (click)="presentProfileModal(i)"/>
+    </div>
+  </ng-container>
+  <ng-container *ngIf="isRagulerGrid">
+    <ion-row>
+      <ion-col size="6" *ngFor="let image of videoList.image; let i=index">
+        <img  src="{{service.bucketUrl}}{{foldername}}/{{videoList.foldername}}/{{image.link}}" (click)="presentProfileModal(i)" />
+      </ion-col>
+    </ion-row>
+  </ng-container>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed" *ngIf="isShown">
+    <ion-fab-button mini (click)="scrollToTop()" class="fab-bg">
+      <ion-icon name="caret-up-outline"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>

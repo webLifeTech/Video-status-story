@@ -1,0 +1,60 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Wallpaper View</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-no-padding">
+  <ion-grid>
+    <ion-row>
+      <ion-col style="padding: 0 !important">
+        <ion-slides #slider [options]="mySlideOptions" loop="true">
+          <ion-slide *ngFor="let i of images">
+            <div class="slide-image-wraper">
+              <img alt="" src="{{i.src.portrait}}" />
+            </div>
+          </ion-slide>
+        </ion-slides>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button ion-fab color="primary">set WP</ion-fab-button>
+    <ion-fab-list side="top">
+      <ion-fab-button ion-fab (click)="setAsWallpaper('')" color="primary"
+        >Both</ion-fab-button
+      >
+      <ion-fab-button ion-fab (click)="setAsWallpaper('lock')" color="primary"
+        >Lock</ion-fab-button
+      >
+    </ion-fab-list>
+  </ion-fab>
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar class="ion-text-center">
+    <ion-grid class="ion-no-padding">
+      <ion-row>
+        <ion-col (click)="download()">
+          <ion-icon
+            name="arrow-down-circle-outline"
+            class="only-icon-withoutbutton"
+            *ngIf="!downloadspinner"
+          ></ion-icon>
+          <ion-spinner *ngIf="downloadspinner" name="dots"></ion-spinner>
+        </ion-col>
+
+        <ion-col (click)="share()">
+          <ion-icon
+            name="share-social-outline"
+            class="only-icon-withoutbutton"
+          ></ion-icon>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-toolbar>
+</ion-footer>

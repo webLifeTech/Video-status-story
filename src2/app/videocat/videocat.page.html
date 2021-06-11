@@ -1,0 +1,43 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{catName}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [scrollEvents]="true" (ionScroll)="onScroll($event)" #content>
+  <div *ngIf="spinner" class="centered">
+    <ion-spinner name="dots"></ion-spinner>
+  </div>
+
+  <ion-grid
+    *ngIf="service.bucketUrl && categories.length"
+    style="padding-top: 0px"
+  >
+    <ion-row>
+      <ion-col
+        class="ion-text-center"
+        size="6"
+        *ngFor="let cat of categories; let i=index;"
+      >
+        <div class="box" (click)="gotoVideoList(cat)">
+          <div>
+            <img
+              src="{{service.bucketUrl}}{{folderName}}/Icon/{{cat.icon}}?avoidCache={{i}}"
+              width="40px"
+            />
+          </div>
+          <div class="box-text">{{cat.name}}</div>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed" *ngIf="isShown">
+    <ion-fab-button mini (click)="scrollToTop()" class="fab-bg">
+      <ion-icon name="caret-up-outline"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>

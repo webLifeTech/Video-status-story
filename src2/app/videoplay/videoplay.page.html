@@ -1,0 +1,95 @@
+<ion-content class="ion-no-padding">
+  <video
+    #myVideo
+    id="myVideo"
+    class="video-js videojs-contrib-quality-levels"
+    controls
+    controlsList="nodownload"
+    disablePictureInPicture
+    preload="metadata"
+    width="100%"
+    height="100%"
+    videojs-contrib-quality-levels
+    autoplay
+    data-setup
+    [poster]="poster"
+  >
+    <source src="{{url}}?avoidCache=1" type="video/mp4" />
+    <p class="vjs-no-js">
+      To view this video please enable JavaScript, and consider upgrading to a
+      web browser that >
+    </p>
+  </video>
+
+  <!-- back -->
+  <ion-fab vertical="top" horizontal="start">
+    <ion-fab-button ion-fab mini (click)="goBack()" class="fab-bg">
+      <ion-icon name="arrow-back-outline"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
+  <!-- Priveus -->
+  <ion-fab vertical="bottom" horizontal="start">
+    <ion-fab-button ion-fab mini (click)="slide(0)" class="fab-bg">
+      <ion-icon name="chevron-back-outline"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
+  <ion-fab vertical="bottom" horizontal="end">
+    <ion-fab-button ion-fab mini (click)="reportVideo()" class="fab-bg">
+      <ion-icon name="alert-outline"></ion-icon>
+    </ion-fab-button>
+    <!-- favorite -->
+    <ion-fab-button
+      ion-fab
+      mini
+      (click)="setFavourite()"
+      *ngIf="!isFavVideo"
+      class="fab-bg"
+    >
+      <ion-icon name="heart-outline"></ion-icon>
+    </ion-fab-button>
+    <ion-fab-button
+      ion-fab
+      mini
+      (click)="unFavourite()"
+      *ngIf="isFavVideo"
+      class="fab-bg"
+    >
+      <ion-icon name="heart-circle-outline"></ion-icon>
+    </ion-fab-button>
+
+    <!-- share -->
+    <ion-fab-button
+      ion-fab
+      mini
+      (click)="share()"
+      *ngIf="!sharespinner"
+      class="fab-bg"
+    >
+      <ion-icon name="share-social-outline"></ion-icon>
+    </ion-fab-button>
+    <ion-fab-button ion-fab mini *ngIf="sharespinner" class="fab-bg">
+      <ion-spinner name="dots"></ion-spinner>
+    </ion-fab-button>
+
+    <!-- download -->
+    <ion-fab-button
+      ion-fab
+      mini
+      (click)="download()"
+      *ngIf="!downloadspinner"
+      class="fab-bg"
+    >
+      <ion-icon name="arrow-down-circle-outline"></ion-icon>
+    </ion-fab-button>
+    <ion-fab-button ion-fab mini *ngIf="downloadspinner" class="fab-bg">
+      <ion-spinner name="dots"></ion-spinner>
+    </ion-fab-button>
+
+    <!-- Next -->
+    <ion-fab-button ion-fab mini (click)="slide(1)" class="fab-bg">
+      <ion-icon name="chevron-forward-outline"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>

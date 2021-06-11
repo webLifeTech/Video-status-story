@@ -1,0 +1,91 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title *ngIf="!isSearch">{{videoList.name}}</ion-title>
+
+    <ion-buttons slot="end" *ngIf="!isSearch">
+      <ion-button icon-only (click)="closeButton()" class="icon-color">
+        <ion-icon name="search"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+
+    <ion-searchbar
+      #ringtoneSearch
+      (ionClear)="closeButton()"
+      *ngIf="isSearch"
+      (search)="serchItem($event)"
+    ></ion-searchbar>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [scrollEvents]="true" (ionScroll)="onScroll($event)" #content>
+  <div *ngIf="spinner" class="centered">
+    <ion-spinner name="dots"></ion-spinner>
+  </div>
+
+  <ion-card class="card-md" *ngIf="!videoList.video.length">
+    <ion-card-header>
+      <span>No Ringtone Found!!</span>
+    </ion-card-header>
+  </ion-card>
+
+  <div *ngIf="videoList.video.length">
+    <ion-card
+      class="card-md"
+      *ngFor="let data of videoList.video;let i = index"
+    >
+      <ion-card-header style="padding: 10px 0px 16px 4px">
+        <audio controls #audio{{i}} id="audio{{i}}" hidden>
+          <source
+            src="{{service.bucketUrl}}{{foldername}}/{{videoList.foldername}}/{{data.thumb}}"
+            type="audio/mpeg"
+          />
+        </audio>
+
+        <div class="view-div">{{data.name}}</div>
+        <div style="float: left; text-align: left">
+          <div>
+            <img
+              src="../../assets/play1.png"
+              *ngIf="currantIndex != i"
+              (click)="play(i)"
+            />
+            <img
+              src="../../assets/pause1.png"
+              *ngIf="currantIndex == i"
+              (click)="pause()"
+            />
+            <ion-spinner
+              style="position: absolute; right: 52px"
+              name="dots"
+              color="white"
+              *ngIf="buffer == i"
+            ></ion-spinner>
+          </div>
+        </div>
+        <div style="float: right; width: 10%" (click)="download(data.thumb, i)">
+          <ion-icon
+            name="arrow-down-circle-outline"
+            class="only-icon-withoutbutton"
+            *ngIf="downloadSpinner != i"
+            style="margin-top: -2px"
+          ></ion-icon>
+          <ion-spinner
+            name="dots"
+            color="white"
+            *ngIf="downloadSpinner == i"
+            class="fab-bg"
+          ></ion-spinner>
+        </div>
+      </ion-card-header>
+    </ion-card>
+  </div>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed" *ngIf="isShown">
+    <ion-fab-button mini (click)="scrollToTop()" class="fab-bg">
+      <ion-icon name="caret-up-outline"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>

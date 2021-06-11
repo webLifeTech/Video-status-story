@@ -1,0 +1,19 @@
+.slide-image-wraper {
+  border-radius: 10px;
+}
+.swiper-container {
+  height: calc(100vh - 139px);
+}
+.costum-fab {
+  --ion-color-base: rgb(255 255 255 / 10%)!important;
+  --box-shadow: none;
+  height: 50px;
+  width: 50px;
+}
+.swiper-slide img{
+  max-width: 100%;
+  max-height: calc(100vh - 133px);
+  justify-content: center;
+  align-items: center;
+  display: flex;
+}

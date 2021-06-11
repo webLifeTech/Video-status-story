@@ -1,0 +1,81 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Text Create</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <div *ngIf="spinner" class="centered">
+    <ion-spinner name="dots"></ion-spinner>
+  </div>
+  <ion-grid class="ion-no-padding">
+    <ion-row class="ion-no-padding">
+      <ion-col size="12" class="ion-no-padding">
+        <canvas #myCanvas id="myCanvas" width="1080px" height="1350px"></canvas>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <ion-segment color="primary" scrollable="true" mode="md">
+          <ion-segment-button
+            style="min-width: 62px !important"
+            class="font-size"
+            *ngFor="let cat of service.allTextBg;let i= index"
+            [value]="i"
+            (click)="transferImage(cat)"
+          >
+            <img src="{{cat}}" />
+          </ion-segment-button>
+        </ion-segment>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <ion-grid style="text-align: center" class="ion-padding">
+      <ion-row>
+        <ion-col>
+          <ion-icon
+            name="color-palette-outline"
+            class="only-icon-withoutbutton"
+            (click)="addColor()"
+          ></ion-icon>
+        </ion-col>
+
+        <ion-col>
+          <ion-icon
+            name="copy-outline"
+            class="only-icon-withoutbutton"
+            (click)="copyText()"
+          ></ion-icon>
+        </ion-col>
+
+        <ion-col>
+          <ion-icon
+            name="arrow-down-circle-outline"
+            class="only-icon-withoutbutton"
+            *ngIf="!downloadspinner"
+            (click)="saveAndAddWaterMark(false)"
+          ></ion-icon>
+          <ion-spinner *ngIf="downloadspinner" name="dots"></ion-spinner>
+        </ion-col>
+
+        <ion-col (click)="saveAndAddWaterMark(true)">
+          <ion-icon
+            *ngIf="!spinner"
+            name="share-social-outline"
+            class="only-icon-withoutbutton"
+          ></ion-icon>
+          <ion-spinner *ngIf="spinner" name="dots"></ion-spinner>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-toolbar>
+</ion-footer>

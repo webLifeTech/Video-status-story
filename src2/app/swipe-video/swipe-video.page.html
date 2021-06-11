@@ -1,0 +1,54 @@
+<ion-content [fullscreen]="true">
+  <ion-slides [options]="slideOpts" #mySlider *ngIf="service.bucketUrl && videoList.length"(ionSlideDidChange)="slideChanged()"
+  (ionSlideReachEnd)="loadMoreData()"(ionSlideNextEnd)="slideNextt()"(ionSlidePrevEnd)="slidePrevv()">
+      <ion-slide style="overflow: hidden" *ngFor="let vidRow of videoList | slice:0:totalrecord; let iii=index">
+        <!-- | slice:0:totalrecord,,,
+        webkit-playsinline="playsinline" playsinline -->
+        <div class="video-box">
+          <video id="myVideo{{iii}}" controls controlsList="nodownload" loop disablePictureInPicture
+            class="videoPlayer" width="100%" [poster]="service.posterImg">
+            <source src="{{videoURL}}{{vidRow.link}}?avoidCache={{iii}}" type="video/mp4" />
+          </video>
+        </div>
+        <span>
+            <ion-icon *ngIf="!isHideShowPlay && isPlay" class="playPause" name="play-circle-outline"></ion-icon>
+            <ion-icon *ngIf="isHideShowPlay && isPlay" class="playPause" name="pause-circle-outline"></ion-icon>
+        </span>
+        <ion-fab vertical="top" horizontal="start" slot="fixed" >
+          <ion-fab-button color="secondary" size="small" class="hw mb-10" (click)="goBacks();$event.stopPropagation()">
+            <ion-icon name="chevron-back-outline" class="blkColor"></ion-icon>
+          </ion-fab-button>
+        </ion-fab>
+        <ion-fab vertical="bottom" horizontal="end" slot="fixed" style="bottom: 70px;">
+          <ion-fab-button color="secondary" size="small" *ngIf="!service.isFavVideo" class="hw mb-10"
+            (click)="service.setFavourites(videoURL+vidRow.link);$event.stopPropagation()">
+            <ion-icon name="heart-outline" class="blkColor"></ion-icon>
+          </ion-fab-button>
+
+          <ion-fab-button color="secondary" size="small" *ngIf="service.isFavVideo" class="hw mb-10"
+            (click)="service.removeFavVideo(videoURL+vidRow.link);$event.stopPropagation()">
+            <ion-icon name="heart" class="blkColor"></ion-icon>
+          </ion-fab-button>
+
+          <ion-fab-button *ngIf="!sharespinner" color="secondary" size="small" class="hw mb-10" (click)="sahreVideo(videoURL+vidRow.link);$event.stopPropagation()">
+            <ion-icon name="arrow-redo-circle-outline" class="blkColor"></ion-icon>
+          </ion-fab-button>
+
+          <ion-fab-button *ngIf="sharespinner" color="secondary" size="small" class="hw mb-10">
+            <ion-spinner name="dots"></ion-spinner>
+          </ion-fab-button>
+
+          <ion-fab-button *ngIf="!downloadspinner" color="secondary" size="small" class="hw mb-10" (click)="downloadVideo(videoURL+vidRow.link);$event.stopPropagation()">
+            <ion-icon name="arrow-down-circle-outline" class="blkColor"></ion-icon>
+          </ion-fab-button>
+          <ion-fab-button color="secondary" size="small" class="hw mb-10" *ngIf="downloadspinner">
+            <ion-spinner name="dots"></ion-spinner>
+          </ion-fab-button>
+
+          <ion-fab-button color="secondary" size="small" class="hw mb-10" (click)="reportVideo(videoURL+vidRow.link);$event.stopPropagation()">
+            <ion-icon name="warning-outline" class="blkColor"></ion-icon>
+          </ion-fab-button>
+        </ion-fab>
+      </ion-slide>
+  </ion-slides>
+</ion-content>

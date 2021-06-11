@@ -1,0 +1,114 @@
+<ion-header class="ion-no-border">
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-back-button></ion-back-button>
+        </ion-buttons>
+        <ion-title>Status Saver</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-no-padding" [scrollEvents]="true" (ionScroll)="onScroll($event)" #content>
+    <ion-grid *ngIf="modal == 'images'" style="padding-top: 0px;padding-bottom: 55px;">
+        <ion-row>
+            <ion-col size="6" *ngFor="let image of service.images">
+                <ion-card class="ion-no-margin ion-text-center">
+                    <img src="{{image.nativeURL}}" height="250px" style="object-fit: cover;" />
+                    <ion-card-content class="ion-no-padding">
+                        <ion-fab style="position: relative;display: flex;">
+                            <ion-fab-button color="secondary" class="costum-fab" size="small" (click)="download(image.name, true, image.isBusinessWP)">
+                                <ion-icon name="arrow-down-circle-outline" class="blkColor"></ion-icon>
+                            </ion-fab-button>
+                            <ion-fab-button color="secondary" class="costum-fab" size="small" (click)="share(image.name, image.isBusinessWP)" style="float: initial;margin-left: auto;">
+                                <ion-icon name="arrow-redo-circle-outline" class="blkColor"></ion-icon>
+                            </ion-fab-button>
+                        </ion-fab>
+                    </ion-card-content>
+                </ion-card>
+            </ion-col>
+            <!-- Tasting For Browser -->
+            <!-- <ion-col size="6" *ngFor="let image of [1,2,3,4,5];let inx = index">
+                <ion-card class="ion-no-margin ion-text-center">
+                    <img src="https://i.pinimg.com/originals/f0/a6/4e/f0a64e32194d341befecc80458707565.jpg"
+                        height="250px" style="object-fit: cover;" />
+                    <ion-card-content class="ion-no-padding">
+                        <ion-fab style="position: relative;display: flex;">
+                            <ion-fab-button *ngIf="!downloadspinner" color="secondary" class="costum-fab" size="small" (click)="download(image.name, true, image.isBusinessWP,inx)">
+                                <ion-icon name="arrow-down-circle-outline" class="blkColor"></ion-icon>
+                            </ion-fab-button>
+                            <ion-fab-button *ngIf="downloadspinner" color="secondary" color="secondary" class="costum-fab" size="small">
+                                <ion-spinner name="dots"></ion-spinner>
+                            </ion-fab-button>
+
+                            <ion-fab-button *ngIf="!sharespinner" color="secondary" class="costum-fab" size="small" style="float: initial;margin-left: auto;">
+                                <ion-icon name="arrow-redo-circle-outline" class="blkColor"></ion-icon>
+                            </ion-fab-button>
+                            <ion-fab-button *ngIf="sharespinner" color="secondary" class="costum-fab" size="small" style="float: initial;margin-left: auto;">
+                                <ion-spinner name="dots"></ion-spinner>
+                            </ion-fab-button>
+                        </ion-fab>
+                    </ion-card-content>
+                </ion-card>
+            </ion-col> -->
+        </ion-row>
+
+        <div class="empty-favorite" *ngIf="service.images.length == 0">
+            <div class="empty-results">
+                <h3 class="ion-text-center">
+                    <img src="../assets/logo.png" width="60px" />
+                </h3>
+                <p class="ion-text-center">You have no Images</p>
+            </div>
+        </div>
+    </ion-grid>
+
+    <ion-grid *ngIf="modal == 'videocam'" style="padding-top: 0px;padding-bottom: 55px;">
+        <ng-container *ngIf="service.videos.length">
+            <ion-row *ngFor="let video of service.videos">
+                <ion-col size="12">
+                    <ion-card class="ion-no-margin">
+                        <video id="myVideo" controls disablePictureInPicture controlsList="nodownload" width="100%"
+                            height="250px" preload="metadata" [poster]="video.thumb">
+                            <source src="{{video.video}}" type="video/mp4" />
+                        </video>
+                        <ion-card-content class="ion-no-padding">
+                            <ion-fab style="position: relative;display: flex;">
+                                <ion-fab-button color="secondary" class="costum-fab" size="small" (click)="download(video.name, false,  video.isBusinessWP)">
+                                    <ion-icon name="arrow-down-circle-outline" class="blkColor"></ion-icon>
+                                </ion-fab-button>
+                                <ion-fab-button color="secondary" class="costum-fab" size="small" (click)="share(video.name, video.isBusinessWP)" style="float: initial;margin-left: auto;">
+                                    <ion-icon name="arrow-redo-circle-outline" class="blkColor"></ion-icon>
+                                </ion-fab-button>
+                            </ion-fab>
+                        </ion-card-content>
+                    </ion-card>
+                </ion-col>
+            </ion-row>
+        </ng-container>
+        <div class="empty-favorite" *ngIf="service.videos.length == 0">
+            <div class="empty-results">
+                <h3 class="ion-text-center">
+                    <img src="../assets/logo.png" width="60px" />
+                </h3>
+                <p class="ion-text-center">You have no Videos</p>
+            </div>
+        </div>
+    </ion-grid>
+
+    <ion-fab vertical="bottom" horizontal="end" slot="fixed" *ngIf="isShown">
+        <ion-fab-button mini (click)="scrollToTop()" class="fab-bg">
+            <ion-icon name="caret-up-outline"></ion-icon>
+        </ion-fab-button>
+    </ion-fab>
+</ion-content>
+<ion-footer>
+    <ion-segment value="call" [(ngModel)]="modal" color="primary">
+        <ion-segment-button value="images" layout="icon-top" (click)="getWhatsappImage()">
+            <ion-icon name="images-outline" class="icon-color"></ion-icon>
+            <ion-label class="segment-label">Images</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="videocam" layout="icon-top" (click)="getWhatsappVideo()">
+            <ion-icon name="videocam-outline" class="icon-color"></ion-icon>
+            <ion-label class="segment-label">Videos</ion-label>
+        </ion-segment-button>
+    </ion-segment>
+</ion-footer>

@@ -1,0 +1,42 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{videoList.name}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [scrollEvents]="true" (ionScroll)="onScroll($event)" #content>
+  <div *ngIf="spinner" class="centered">
+    <ion-spinner name="dots"></ion-spinner>
+  </div>
+  <ng-container *ngIf="service.bucketUrl">
+    <ion-grid
+      *ngIf="service.bucketUrl && videoList.video.length"
+      style="padding-top: 0px"
+    >
+      <ion-row>
+        <ion-col size="6" *ngFor="let cat of videoList.video; let i=index">
+          <div (click)="openVideo(i)" class="thumb_card">
+            <div style="min-height: 180px">
+              <img
+                src="{{service.bucketUrl}}{{foldername}}/{{videoList.foldername}}/{{cat.thumb}}?avoidCache={{i}}"
+              />
+              <img src="assets/play.gif" class="play_icon" width="90px" />
+            </div>
+            <div *ngIf="cat.song">
+              <p class="text-wrape">{{cat.song}}</p>
+            </div>
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ng-container>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed" *ngIf="isShown">
+    <ion-fab-button mini (click)="scrollToTop()" class="fab-bg">
+      <ion-icon name="caret-up-outline"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>

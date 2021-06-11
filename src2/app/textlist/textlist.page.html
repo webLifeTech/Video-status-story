@@ -1,0 +1,44 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{videoList.name}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content
+  class="ion-no-padding"
+  [scrollEvents]="true"
+  (ionScroll)="onScroll($event)"
+  #content
+>
+  <ion-segment [(ngModel)]="index" color="primary" scrollable="true" mode="md">
+    <ion-segment-button
+      class="font-size"
+      *ngFor="let cat of videoList.subcategory;let i= index"
+      [value]="i"
+      (click)="gotoVideoList(i)"
+    >
+      <ion-label class="segment-label">{{cat.name}}</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+
+  <div *ngIf=" videoList.subcategory[index].Message.length">
+    <ion-card
+      *ngFor="let data of  videoList.subcategory[index].Message;let i = index"
+    >
+      <ion-card-header
+        style="padding: 10px 0px 16px 4px"
+        (click)="goToTextCreation(data.text)"
+      >
+        <div class="view-div">{{data.text}}</div>
+      </ion-card-header>
+    </ion-card>
+  </div>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed" *ngIf="isShown">
+    <ion-fab-button mini (click)="scrollToTop()" class="fab-bg">
+      <ion-icon name="caret-up-outline"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>

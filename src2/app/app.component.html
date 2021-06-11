@@ -1,0 +1,42 @@
+<ion-app>
+    <ion-split-pane contentId="main-content">
+        <ion-menu contentId="main-content" type="overlay">
+            <ion-content>
+                <ion-list id="inbox-list">
+                    <ion-list-header>Vibes Studio</ion-list-header>
+                    <hr style="margin-top: 18px" />
+                    <ion-item button menuClose (click)="viewFavorite();menuCtrl.close()" routerDirection="root" routerLinkActive="selected" lines="none" detail="false">
+                        <ion-icon  class="icon-color" name="heart" slot="start"></ion-icon>
+                        <ion-label>My Favorite</ion-label>
+                    </ion-item>
+                    <ion-item button menuClose (click)="goToGallery();menuCtrl.close()" routerDirection="root" routerLinkActive="selected" lines="none" detail="false">
+                        <ion-icon  class="icon-color" name="folder-outline" slot="start"></ion-icon>
+                        <ion-label>My Creation</ion-label>
+                    </ion-item>
+                    <!-- *ngIf="service.bucketUrl && service.videoList.length" -->
+                    <!-- <ion-menu-toggle auto-hide="false" *ngFor="let cat of service.videoList; let i = index">
+                        <ion-item button routerDirection="root" lines="none" detail="false" routerLinkActive="selected"
+                        (click)="service.navigateMenuList(cat.category, cat.foldername, cat.name)">
+                        <img slot="start" src="{{ service.bucketUrl }}Icon/{{ cat.icon }}?avoidCache={{i}}" width="20px"/>
+                        <ion-label>{{ cat.name }}</ion-label>
+                        </ion-item>
+                    </ion-menu-toggle> -->
+                </ion-list>
+
+                <ion-list id="labels-list">
+                    <ion-list-header>Support us</ion-list-header>
+                    <ion-item button menuClose lines="none" (click)="service.rateUs('vibes.video.status.in')">
+                        <ion-icon slot="start" class="icon-color" ios="star-outline" md="star-outline"></ion-icon>
+                        <ion-label>Rate Us</ion-label>
+                    </ion-item>
+                    <ion-item button menuClose lines="none" (click)="service.shareAll(service.logoUrl)">
+                        <ion-icon slot="start" class="icon-color" ios="share-social-outline" md="share-social-outline">
+                        </ion-icon>
+                        <ion-label>Share App</ion-label>
+                    </ion-item>
+                </ion-list>
+            </ion-content>
+        </ion-menu>
+        <ion-router-outlet id="main-content"></ion-router-outlet>
+    </ion-split-pane>
+</ion-app>
